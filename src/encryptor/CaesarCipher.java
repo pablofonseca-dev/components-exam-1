@@ -60,12 +60,23 @@ public class CaesarCipher implements IEncrypt {
         return this.parseAlphabeticalIndexToAscii(characterIndex, isUpper);
     }
 
+    /**
+     * Unshift a character position in the alphabet.
+     * @param character The character to unshift.
+     * @return The new character.
+     */
     private char unshiftChar(char character) {
         boolean isUpper = (character >= 'A' && character <= 'Z');
 
         int characterIndex = this.parseAsciiToAlphabeticalIndex(character);
 
         int conversion = characterIndex - this.shift;
+
+        /*
+            Because Java Modulo operation is not a "true" modulo operation as in Python but is
+            a reminder modulo operation we should use Math.floorMod to replicate the same effect
+            that a common modulo operation has when using negative numbers.
+        */
         characterIndex = Math.floorMod(conversion, 26);
 
         return this.parseAlphabeticalIndexToAscii(characterIndex, isUpper);
